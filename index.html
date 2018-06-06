@@ -1,0 +1,205 @@
+
+  <!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>APA Member API</title>
+      <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body class="layout-demo">
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <header class="usa-header usa-header-basic" role="banner">
+      <div class="usa-nav-container">
+        <div class="usa-navbar">
+          <button class="usa-menu-btn">Menu</button>
+          <div class="usa-logo" id="logo">
+            <em class="usa-logo-text">
+              <a href="#" title="Home" aria-label="APA Membership API">APA Membership API</a>
+            </em>
+          </div>
+        </div>
+        <nav role="navigation" class="usa-nav">
+          <button class="usa-nav-close">
+            <img src="assets/img/close.svg" alt="close">
+          </button>
+          <!-- <ul class="usa-nav-primary usa-accordion">
+            <li>
+              <button class="
+              usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="side-nav-1">
+                <span>Section title</span>
+              </button>
+              <ul id="side-nav-1" class="usa-nav-submenu">
+                <li>
+                  <a href="#">Page title</a>
+                </li>
+                <li>
+                  <a href="#">Page title</a>
+                </li>
+                <li>
+                  <a href="#">Page title</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="sidenav-2">
+                <span>Simple terms</span>
+              </button>
+              <ul id="sidenav-2" class="usa-nav-submenu">
+                <li>
+                  <a href="#">Page title</a>
+                </li>
+                <li>
+                  <a href="#">Page title</a>
+                </li>
+                <li>
+                  <a href="#">Page title</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class="usa-nav-link" href="#">
+                <span>Distinct from each other</span>
+              </a>
+            </li>
+          </ul> -->
+          <!-- <form class="usa-search usa-search-small">
+            <div role="search">
+              <label class="usa-sr-only" for="search-field-small">Search small</label>
+              <input id="search-field-small" type="search" name="search">
+              <button type="submit">
+                <span class="usa-sr-only">Search</span>
+              </button>
+            </div>
+          </form> -->
+        </nav>
+      </div>
+    </header>
+    <div class="usa-overlay"></div>
+    <main class="usa-grid usa-section usa-content usa-layout-docs" id="main-content">
+      <aside class="usa-width-one-fourth usa-layout-docs-sidenav">
+        <ul class="usa-sidenav-list">
+          <li>
+            <a href="#section-heading-introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#section-heading-authentication">Authentication</a>
+          </li>
+          <li>
+            <a href="#section-heading-members">Members</a>
+            <ul class="usa-sidenav-sub_list">
+              <li><a href="#section-member-get">GET</a></li>
+              <li><a href="#section-member-post">POST/PUT</a></li>
+              <li><a href="#section-member-delete">DELETE</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#section-heading-activity">Activity</a>
+          </li>
+        </ul>
+      </aside>
+      <div class="usa-width-three-fourths usa-layout-docs-main_content">
+        <h2 id="section-heading-introduction">Introduction</h2>
+        <hr class="heading" />
+        <p>This documentation is an overview for using the APA membership API.</p>
+
+        <h3>Allowed HTTPS requests</h3>
+        <p><strong>GET:</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get a resource or list of resources<br>
+           <strong>POST:</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add a new resource. Can be used for update requests for WordPress compatibility. Also used for authentication requests<br>
+           <strong>PUT:</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update a resource<br>
+           <strong>DELETE:</strong> Delete a resource</p>
+
+        <p><strong>API Base URI:</strong> https://www.academicpeds.org/apps/api/v1</p>
+
+        <h2 id="section-heading-authentication">Authentication</h2>
+        <hr class="heading" />
+        <p>Most requests require an authentication token be present in order to resolve. In order to obtain an authentication token, a user will send a POST request to <pre>https://www.academicpeds.org/apps/api/v1/authenticate</pre> and pass the following JSON object <pre>{ "username":"{username}","password":"{password}"}</pre>If successful, the API will return a JSON object <pre>{<br>
+        "message": "success"     //or "Input not valid" for a failed request<br>
+        "token" : {generatedAuthToken}<br>
+        "email" : {userEmail}<br>
+        "display_name" : {userFirstName}<br>}</pre>
+        The token can then be passed with future HTTPS request in the header as "x-access-token".</p>
+
+
+        <h2 id="section-heading-members">Members resource</h2>
+        <hr class="heading" />
+        <p>The members resource contains all member demographic information. Member information CRUD operations are handled by this resource.</p>
+        
+        <h3 id="section-member-get">GET</h3>
+        <p>The GET operation is used to view a single or multiple member resources.</p>
+        <p>To get a list of all member resources, enter the request <pre>https://www.academicpeds.org/apps/api/v1/members</pre> The request will return the first 25 resources found. Pagination is available by adding a "page" variable to the URL query string.</p>
+        <p>To get an individual member resource, enter the request https://www.academicpeds.org/apps/api/v1/members/:memberId<pre></pre>
+
+        <p>The member object model is listed below
+          <pre>{
+            "memberId" //resource ID. Used for accessing individual resources
+            "firstName"
+            "lastName"
+            "middleName"
+            "degree" //resource professional degree
+            "academicTitle"
+            "department"
+            "institution"
+            "busPhone"
+            "email"
+            "address"
+            "address2"
+            "city"
+            "state"
+            "zip"
+            "country"
+            "fax"
+            "memberType"
+            "duesYear" //latest current membership renewal year
+}
+ </pre></p>
+
+        <h3 id="section-member-post">POST/PUT</h3>
+        <p>An individual Member resource can be created by issuing a POST request to 
+          <pre>https://www.academicpeds.org/apps/api/v1/members</pre> The <strong>firstName</strong>, <strong>lastName</strong>, and <strong>Email</strong> object keys are required, all other keys are optional.</p>
+        <p>An existing member resource can be updated by issuing a POST or PUT request. NOTE: only the owner of the Member resource or an ADMIN user can update an existing resource. This authorization is handled by the provided authentication token. <pre>https://www.academicpeds.org/apps/api/v1/members/:memberId</pre></p>
+
+        <h3 id="section-member-delete">DELETE</h3>
+        <p>An individual Member resource can be deleted by issuing a DELETE request to 
+        <pre>https://www.academicpeds.org/apps/api/v1/members/:memberId</pre>
+      NOTE: only the owner of the Member resource or an ADMIN user can delete an existing resource. This authorization is handled by the provided authentication token.</p>
+
+      <h2 id="section-heading-activity">Acitivty resource</h2>
+      <hr class="heading" />
+      <p>All member activities are handled by this resource. This includes committee memberships, positions held in the organization, etc.</p>
+      <p>
+
+      </div>
+    </main>
+    <footer class="usa-footer usa-footer-medium" role="contentinfo">
+      <div class="usa-grid usa-footer-return-to-top">
+        <a href="#">Return to top</a>
+      </div>
+     
+
+      <div class="usa-footer-secondary_section">
+        <div class="usa-grid">
+          <div class="usa-footer-logo usa-width-one-half">
+            <img class="usa-footer-logo-img" src="assets/img/bgLogo.jpg" alt="Logo image">
+            
+          </div>
+          <div class="usa-footer-contact-links usa-width-one-half">
+            <address>
+              <h3 class="usa-footer-contact-heading">6728 Old McLean Village, Dr<br>McLean, VA 22101</h3>
+              <p>(703)556-9222</p>
+              <a href="mailto:info@academicpeds.org">info@academicpeds.org</a>
+            </address>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="assets/vendor/js/include.min.js"></script>
+    </body>
+  </html>
+
+<footer class="demo-footer">
+  <div class="demo-footer-content">
+    
+  </div>
+</footer>
+
