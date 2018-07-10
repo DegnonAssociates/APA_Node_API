@@ -63,10 +63,9 @@ router.get('/committees/:positionCode', function (req, res) {
 	}
 });
 
+// check post, url params, or header for token
+function valToken(req, res) {
 
-router.use(function (req, res, next) { 
-
-	// check post, url params, or header for token
 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
 	
 
@@ -76,35 +75,110 @@ router.use(function (req, res, next) {
 		jwt.verify(token, settings.secret, function (err, decoded) {
 			if (err) {
 				httpMsgs.show400(req, res);
+				return false;
 			} else {
 				// authn passed, save to request for use in other routes
 				req.decoded = decoded;
-				next();
+<<<<<<< HEAD
+				return true;
+=======
+>>>>>>> 9852988f52c581771863177caf20512520446067
+
 			}
 		});
 	} else {
 		if( req.headers['authorization'] ){
 			authn.getAuthn(req, res);
-			next();
+<<<<<<< HEAD
+			return true;
+=======
+>>>>>>> 9852988f52c581771863177caf20512520446067
 		} else {
 			// if no token or auth is passed return an error
 			httpMsgs.show401(req, res);
+			return false;
 		}
 		
 	}
 
-	// member GET all POST routes
+}
+// member GET all POST routes
 	router.route('/members')
 		.get(function (req, res) {
+<<<<<<< HEAD
+			var t = valToken(req, res);
+			if( t ){
+				member.getList(req, res);		
+			} 
+		})
+		.post(function (req, res) { 
+			var t = valToken(req, res);
+			if( t ){
+				member.add(req, res);		
+			} 
+=======
+			valToken(req, res);
 			member.getList(req, res);
 		})
 		.post(function (req, res) { 
+			valToken(req, res);
 			member.add(req, res);
+>>>>>>> 9852988f52c581771863177caf20512520446067
 	});
+
 
 	// member GET one PUT DELETE routes
 	router.route('/members/:memberId')
 		.get(function (req, res) { 
+<<<<<<< HEAD
+			var t = valToken(req, res);
+			if( t ){
+				var memIdPatt = "[0-9]+";
+				var patt = new RegExp("/members/" + memIdPatt);
+				if (patt.test(req.url)) {
+					patt = new RegExp(memIdPatt);
+					var memberId = patt.exec(req.url);
+					member.get(req, res, memberId);
+				} else {
+					httpMsgs.show404(req, res);
+				}
+			}
+		})
+		.put(function (req, res) {
+			var t = valToken(req, res);
+			if( t ){
+				var memIdPatt = "[0-9]+";
+				var patt = new RegExp("/members/" + memIdPatt);
+				if (patt.test(req.url)) {
+					patt = new RegExp(memIdPatt);
+					var memberId = patt.exec(req.url);
+					member.update(req, res, memberId);
+				} else {
+					httpMsgs.show404(req, res);
+				}
+			}
+		})
+		.post(function (req, res) {
+			var t = valToken(req, res);
+			if( t ){
+				var memIdPatt = "[0-9]+";
+				var patt = new RegExp("/members/" + memIdPatt);
+				if (patt.test(req.url)) {
+					patt = new RegExp(memIdPatt);
+					var memberId = patt.exec(req.url);
+					member.update(req, res, memberId);
+				} else {
+					httpMsgs.show404(req, res);
+				}
+			}
+		})
+		.delete(function (req, res) {
+			var t = valToken(req, res);
+			if( t ){
+				member.delete(req, res);
+			}
+=======
+			valToken(req, res);
 			var memIdPatt = "[0-9]+";
 			var patt = new RegExp("/members/" + memIdPatt);
 			if (patt.test(req.url)) {
@@ -116,6 +190,7 @@ router.use(function (req, res, next) {
 			}
 		})
 		.put(function (req, res) {
+			valToken(req, res);
 			var memIdPatt = "[0-9]+";
 			var patt = new RegExp("/members/" + memIdPatt);
 			if (patt.test(req.url)) {
@@ -127,6 +202,7 @@ router.use(function (req, res, next) {
 			}
 		})
 		.post(function (req, res) {
+			valToken(req, res);
 			var memIdPatt = "[0-9]+";
 			var patt = new RegExp("/members/" + memIdPatt);
 			if (patt.test(req.url)) {
@@ -138,21 +214,65 @@ router.use(function (req, res, next) {
 			}
 		})
 		.delete(function (req, res) {
+			valToken(req, res);
 			member.delete(req, res);
+>>>>>>> 9852988f52c581771863177caf20512520446067
 	});
 
 	// activities GET all POST routes
 	router.route('/activities')
 		.get(function (req, res) {
+<<<<<<< HEAD
+			var t = valToken(req, res);
+			if( t ){
+				activity.getList(req, res);
+			}
+		})
+		.post(function (req, res) { 
+			var t = valToken(req, res);
+			if( t ){
+				activity.add(req, res);
+			}
+=======
+			valToken(req, res);
 			activity.getList(req, res);
 		})
 		.post(function (req, res) { 
+			valToken(req, res);
 			activity.add(req, res);
+>>>>>>> 9852988f52c581771863177caf20512520446067
 	});
 
 	// activities GET one PUT DELETE routes
 	router.route('/activities/:memberId')
 		.get(function (req, res) { 
+<<<<<<< HEAD
+			var t = valToken(req, res);
+			if( t ){
+				var memIdPatt = "[0-9]+";
+				var patt = new RegExp("/activities/" + memIdPatt);
+				if (patt.test(req.url)) {
+					patt = new RegExp(memIdPatt);
+					var memberId = patt.exec(req.url);
+					activity.get(req, res, memberId);
+				} else {
+					httpMsgs.show404(req, res);
+				}
+			}
+		})
+		.put(function (req, res) {
+			var t = valToken(req, res);
+			if( t ){
+				activity.update(req, res, memberId);
+			}
+		})
+		.delete(function (req, res) {
+			var t = valToken(req, res);
+			if( t ){
+				activity.delete(req, res);
+			}
+=======
+			valToken(req, res);
 			var memIdPatt = "[0-9]+";
 			var patt = new RegExp("/activities/" + memIdPatt);
 			if (patt.test(req.url)) {
@@ -164,24 +284,69 @@ router.use(function (req, res, next) {
 			}
 		})
 		.put(function (req, res) {
+			valToken(req, res);
 			activity.update(req, res, memberId);
 		})
 		.delete(function (req, res) {
+			valToken(req, res);
 			activity.delete(req, res);
+>>>>>>> 9852988f52c581771863177caf20512520446067
 	});
 
 	// activityCode GET all POST routes
-	router.route('/activityCodes')
+	router.route('/activityCodes')	
 		.get(function (req, res) {
+<<<<<<< HEAD
+			var t = valToken(req, res);
+			if( t ){
+				activityCode.getList(req, res);
+			}
+		})
+		.post(function (req, res) { 
+			var t = valToken(req, res);
+			if( t ){
+				activityCode.add(req, res);
+			}
+=======
+			valToken(req, res);
 			activityCode.getList(req, res);
 		})
 		.post(function (req, res) { 
+			valToken(req, res);
 			activityCode.add(req, res);
+>>>>>>> 9852988f52c581771863177caf20512520446067
 	});
 
 	// activityCode GET one PUT DELETE routes
 	router.route('/activityCodes/:activityId')
 		.get(function (req, res) { 
+<<<<<<< HEAD
+			var t = valToken(req, res);
+			if( t ){
+				var activityIdPatt = "[0-9]+";
+				var patt = new RegExp("/activityCode/" + activityIdPatt);
+				if (patt.test(req.url)) {
+					patt = new RegExp(activityIdPatt);
+					var activityId = patt.exec(req.url);
+					activity.get(req, res, activitysId);
+				} else {
+					httpMsgs.show404(req, res);
+				}
+			}
+		})
+		.put(function (req, res) {
+			var t = valToken(req, res);
+			if( t ){
+				activityCode.update(req, res);
+			}
+		})
+		.delete(function (req, res) {
+			var t = valToken(req, res);
+			if( t ){
+				activityCode.delete(req, res);
+			}
+=======
+			valToken(req, res);
 			var activityIdPatt = "[0-9]+";
 			var patt = new RegExp("/activityCode/" + activityIdPatt);
 			if (patt.test(req.url)) {
@@ -193,17 +358,22 @@ router.use(function (req, res, next) {
 			}
 		})
 		.put(function (req, res) {
+			valToken(req, res);
 			activityCode.update(req, res);
 		})
 		.delete(function (req, res) {
+			valToken(req, res);
 			activityCode.delete(req, res);
+>>>>>>> 9852988f52c581771863177caf20512520446067
 	});
-});
+
+
+
 
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use('/api/v1', router);
+app.use('/apps/api/v1', router);
 
 // START THE SERVER
 // =============================================================================
